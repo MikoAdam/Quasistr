@@ -1,5 +1,6 @@
 package com.quasistr
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.quasistr.screens.GameModesScreen
+import com.quasistr.screens.MainMenuScreen
 import com.quasistr.ui.theme.QuasistrTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,11 +29,19 @@ class MainActivity : ComponentActivity() {
                     )
                     "DeckSelection" -> DeckSelectionScreen(
                         onBackClick = { currentScreen = "MainMenu" },
-                        onDeckSelect = { /* Future implementation */ }
+                        onDeckSelect = { deck ->
+                            // Start GameActivity with the selected deck
+                            val intent = Intent(this@MainActivity, GameActivity::class.java)
+                            intent.putExtra("deck", deck)
+                            startActivity(intent)
+                        }
                     )
                     "GameModes" -> GameModesScreen(
                         onBackClick = { currentScreen = "MainMenu" },
-                        onModeSelect = { currentScreen = "DeckSelection" }
+                        onModeSelect = {
+                            // For now, all modes just go to deck selection
+                            currentScreen = "DeckSelection"
+                        }
                     )
                 }
             }

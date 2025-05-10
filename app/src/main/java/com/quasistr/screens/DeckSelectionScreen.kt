@@ -27,6 +27,8 @@ fun DeckSelectionScreen(
     onDeckSelect: (String) -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
+    var selectedDeck by remember { mutableStateOf<String?>(null) }
+
     val allDecks = listOf("Movies", "Animals", "Famous People", "Geography", "Food & Drinks", "Sports")
     val filteredDecks = if (searchText.isEmpty()) {
         allDecks
@@ -95,7 +97,7 @@ fun DeckSelectionScreen(
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
             ) {
-                // Search Bar
+                // Search Bar - Fix: remove the indicator color settings
                 TextField(
                     value = searchText,
                     onValueChange = { searchText = it },
@@ -108,7 +110,12 @@ fun DeckSelectionScreen(
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = IndigoDark,
-                        unfocusedTextColor = IndigoDark
+                        unfocusedTextColor = IndigoDark,
+                        // Remove these two lines to fix the underline issue
+                        // focusedIndicatorColor = IndigoLight,
+                        // unfocusedIndicatorColor = Color.White
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
                     ),
                     shape = RoundedCornerShape(24.dp),
                     singleLine = true
@@ -125,7 +132,10 @@ fun DeckSelectionScreen(
                         DeckItem(
                             name = deck,
                             wordCount = 30,
-                            onClick = { onDeckSelect(deck) }
+                            isSelected = selectedDeck == deck,
+                            onClick = {
+                                selectedDeck = deck
+                            }
                         )
                     }
 
@@ -166,9 +176,16 @@ fun DeckSelectionScreen(
                         }
 
                         Button(
-                            onClick = { /* Start game with selected deck */ },
+                            onClick = {
+                                // Only start the game if a deck is selected
+                                selectedDeck?.let { deck ->
+                                    onDeckSelect(deck)
+                                }
+                            },
+                            enabled = selectedDeck != null,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = AmberPrimary
+                                containerColor = AmberPrimary,
+                                disabledContainerColor = AmberPrimary.copy(alpha = 0.5f)
                             ),
                             shape = RoundedCornerShape(24.dp)
                         ) {
@@ -197,6 +214,7 @@ fun DeckSelectionScreen(
 fun DeckItem(
     name: String,
     wordCount: Int,
+    isSelected: Boolean = false,
     onClick: () -> Unit
 ) {
     Surface(
@@ -204,7 +222,7 @@ fun DeckItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp),
-        color = IndigoSurface,
+        color = if (isSelected) AmberPrimary else IndigoSurface,
         shape = RoundedCornerShape(16.dp)
     ) {
         Column(
@@ -214,14 +232,14 @@ fun DeckItem(
         ) {
             Text(
                 text = name,
-                color = Color.White,
+                color = if (isSelected) IndigoDark else Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
 
             Text(
                 text = "$wordCount words",
-                color = Color.White.copy(alpha = 0.7f),
+                color = if (isSelected) IndigoDark.copy(alpha = 0.7f) else Color.White.copy(alpha = 0.7f),
                 fontSize = 12.sp
             )
         }

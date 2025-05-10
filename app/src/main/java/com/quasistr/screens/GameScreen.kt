@@ -1,0 +1,173 @@
+package com.quasistr.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.quasistr.ui.theme.*
+
+@Composable
+fun GameScreen(
+    currentWord: String,
+    guessedCount: Int,
+    skippedCount: Int,
+    remainingTime: Int,
+    onEndGame: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(IndigoBackground)
+    ) {
+        // Background circles
+        Box(
+            modifier = Modifier
+                .size(300.dp)
+                .align(Alignment.Center)
+                .clip(CircleShape)
+                .background(IndigoSurface.copy(alpha = 0.6f))
+        )
+        
+        // Content
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Top row - Timer and Score
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Score
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "✓ $guessedCount",
+                        color = Color.Green,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
+                    
+                    Spacer(modifier = Modifier.width(16.dp))
+                    
+                    Text(
+                        text = "✗ $skippedCount",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
+                }
+                
+                // Timer
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(
+                            when {
+                                remainingTime <= 5 -> Color.Red
+                                remainingTime <= 15 -> Color.Yellow
+                                else -> AmberPrimary
+                            }
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = remainingTime.toString(),
+                        color = IndigoDark,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
+                }
+            }
+            
+            // Current word card
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+                color = Color.White
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = currentWord,
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = IndigoDark,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            // Tilt indicators
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "Tilt Up",
+                        tint = Color.Green,
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Text(
+                        text = "CORRECT",
+                        color = Color.Green,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Tilt Down",
+                        tint = Color.Red,
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Text(
+                        text = "SKIP",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+        
+        // End game button (for testing only, can be removed)
+        Button(
+            onClick = onEndGame,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = IndigoSurface
+            )
+        ) {
+            Text("End Game")
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.quasistr
+package com.quasistr.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

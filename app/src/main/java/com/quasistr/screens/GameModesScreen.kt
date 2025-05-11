@@ -13,8 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +22,7 @@ import com.quasistr.ui.theme.*
 
 @Composable
 fun GameModesScreen(
+    currentGameMode: String = "Normal",
     onBackClick: () -> Unit,
     onModeSelect: (String) -> Unit
 ) {
@@ -30,7 +31,6 @@ fun GameModesScreen(
             .fillMaxSize()
             .background(IndigoBackground)
     ) {
-        // Background circles
         Box(
             modifier = Modifier
                 .size(300.dp)
@@ -47,13 +47,11 @@ fun GameModesScreen(
                 .background(IndigoLight.copy(alpha = 0.5f))
         )
 
-        // Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -75,18 +73,21 @@ fun GameModesScreen(
 
                 Text(
                     text = "GAME MODES",
-                    color = AmberPrimary,
+                    color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
 
-            // Game Modes List - Change to use available icons
             val gameModes = listOf(
-                GameMode("NORMAL MODE", "60 seconds fixed timer. Tilt up for correct, down to skip. Simple!", Icons.Default.Favorite, true),
-                GameMode("CHALLENGE MODE", "Start with 60s. Correct: +10s, Skip: -5s. 3 hearts (mistakes). How long can you go?", Icons.Default.Favorite),
-                GameMode("LANGUAGE LEARNING", "Practice language skills! Replay skipped words after the game to improve vocabulary.", Icons.Default.Favorite),
-                GameMode("PVP / TEAM MODE", "Local match with point counter per team. Share deck, enjoy the competitive end summary!", Icons.Default.Favorite)
+                GameMode("Normal", "60 seconds fixed timer. Tilt up for correct, down to skip. Simple!",
+                    Icons.Default.Call, isSelected = currentGameMode == "Normal"),
+                GameMode("Challenge", "Start with 60s. Correct: +10s, Skip: -5s. 3 hearts (mistakes). How long can you go?",
+                    Icons.Default.Favorite, isSelected = currentGameMode == "Challenge"),
+                GameMode("Language Learning", "Practice language skills! Replay skipped words after the game to improve vocabulary.",
+                    Icons.Default.Info, isSelected = currentGameMode == "Language Learning"),
+                GameMode("PVP Team", "Local match with point counter per team. Share deck, enjoy the competitive end summary!",
+                    Icons.Default.Star, isSelected = currentGameMode == "PVP Team")
             )
 
             LazyColumn(
@@ -101,7 +102,6 @@ fun GameModesScreen(
                 }
             }
 
-            // Bottom Action Bar
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,7 +133,10 @@ fun GameModesScreen(
                     }
 
                     Button(
-                        onClick = { onModeSelect(gameModes[0].title) },
+                        onClick = {
+                            val selectedMode = gameModes.find { it.isSelected }?.title ?: "Normal"
+                            onModeSelect(selectedMode)
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = AmberPrimary
                         ),

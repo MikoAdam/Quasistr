@@ -1,5 +1,6 @@
 package com.quasistr.screens
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -8,16 +9,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.quasistr.ui.theme.*
+import kotlinx.coroutines.delay
 
 @Composable
 fun GameScreen(
@@ -27,12 +30,37 @@ fun GameScreen(
     remainingTime: Int,
     onEndGame: () -> Unit
 ) {
+    var showCorrectAnimation by remember { mutableStateOf(false) }
+    var showSkipAnimation by remember { mutableStateOf(false) }
+    var wordScale by remember { mutableStateOf(1f) }
+
+    val correctIconSize = animateFloatAsState(
+        targetValue = if (showCorrectAnimation) 1.5f else 1f,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = FastOutSlowInEasing
+        ), label = "correctIconAnimation"
+    )
+
+    val skipIconSize = animateFloatAsState(
+        targetValue = if (showSkipAnimation) 1.5f else 1f,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = FastOutSlowInEasing
+        ), label = "skipIconAnimation"
+    )
+
+    LaunchedEffect(currentWord) {
+        wordScale = 0.8f
+        delay(50)
+        wordScale = 1f
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(IndigoBackground)
     ) {
-        // Background circles
         Box(
             modifier = Modifier
                 .size(300.dp)
@@ -40,16 +68,14 @@ fun GameScreen(
                 .clip(CircleShape)
                 .background(IndigoSurface.copy(alpha = 0.6f))
         )
-        
-        // Content
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Top row - Timer and Score
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -57,7 +83,6 @@ fun GameScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Score
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "✓ $guessedCount",
@@ -65,9 +90,9 @@ fun GameScreen(
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
-                    
+
                     Spacer(modifier = Modifier.width(16.dp))
-                    
+
                     Text(
                         text = "✗ $skippedCount",
                         color = Color.Red,
@@ -75,8 +100,7 @@ fun GameScreen(
                         fontSize = 24.sp
                     )
                 }
-                
-                // Timer
+
                 Box(
                     modifier = Modifier
                         .size(64.dp)
@@ -98,20 +122,25 @@ fun GameScreen(
                     )
                 }
             }
-            
-            // Current word card
+
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .padding(16.dp),
+                    .scale(wordScale),
                 shape = RoundedCornerShape(16.dp),
-                color = Color.White
+                color = Color.White,
+                shadowElevation = 8.dp
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
                         text = currentWord,
-                        fontSize = 40.sp,
+                        fontSize = when {
+                            currentWord.length > 20 -> 28.sp
+                            currentWord.length > 15 -> 32.sp
+                            currentWord.length > 10 -> 36.sp
+                            else -> 40.sp
+                        },
                         fontWeight = FontWeight.Bold,
                         color = IndigoDark,
                         textAlign = TextAlign.Center,
@@ -119,55 +148,59 @@ fun GameScreen(
                     )
                 }
             }
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // Tilt indicators
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Tilt Up",
-                        tint = Color.Green,
-                        modifier = Modifier.size(48.dp)
-                    )
-                    Text(
-                        text = "CORRECT",
-                        color = Color.Green,
-                        fontWeight = FontWeight.Bold
-                    )
+
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Tilt Up",
+                            tint = Color.Green,
+                            modifier = Modifier
+                                .size(48.dp * correctIconSize.value)
+                        )
+                        Text(
+                            text = "CORRECT",
+                            color = Color.Green,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Tilt Down",
+                            tint = Color.Red,
+                            modifier = Modifier
+                                .size(48.dp * skipIconSize.value)
+                        )
+                        Text(
+                            text = "SKIP",
+                            color = Color.Red,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
-                
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Tilt Down",
-                        tint = Color.Red,
-                        modifier = Modifier.size(48.dp)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = onEndGame,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = IndigoSurface
                     )
-                    Text(
-                        text = "SKIP",
-                        color = Color.Red,
-                        fontWeight = FontWeight.Bold
-                    )
+                ) {
+                    Text("End Game")
                 }
             }
-        }
-        
-        // End game button (for testing only, can be removed)
-        Button(
-            onClick = onEndGame,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = IndigoSurface
-            )
-        ) {
-            Text("End Game")
         }
     }
 }

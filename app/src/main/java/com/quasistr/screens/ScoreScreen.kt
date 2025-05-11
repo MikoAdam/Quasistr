@@ -10,7 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +33,6 @@ fun ScoreScreen(
             .fillMaxSize()
             .background(IndigoBackground)
     ) {
-        // Background circles
         Box(
             modifier = Modifier
                 .size(300.dp)
@@ -41,15 +40,13 @@ fun ScoreScreen(
                 .clip(CircleShape)
                 .background(IndigoSurface.copy(alpha = 0.6f))
         )
-        
-        // Content
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header
             Text(
                 text = "GAME OVER",
                 color = AmberPrimary,
@@ -58,8 +55,7 @@ fun ScoreScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
             )
-            
-            // Score summary
+
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,13 +74,13 @@ fun ScoreScreen(
                         value = guessedWords.size.toString(),
                         color = Color.Green
                     )
-                    
+
                     ScoreStat(
                         label = "SKIPPED",
                         value = skippedWords.size.toString(),
                         color = Color.Red
                     )
-                    
+
                     ScoreStat(
                         label = "TOTAL",
                         value = (guessedWords.size + skippedWords.size).toString(),
@@ -92,14 +88,12 @@ fun ScoreScreen(
                     )
                 }
             }
-            
-            // Word lists
+
             Row(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                // Guessed words
                 Surface(
                     modifier = Modifier
                         .weight(1f)
@@ -108,30 +102,29 @@ fun ScoreScreen(
                     shape = RoundedCornerShape(16.dp),
                     color = Color.White.copy(alpha = 0.9f)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Column(modifier = Modifier.padding(8.dp)) {
                         Text(
                             text = "GUESSED",
                             color = Color.Green,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontSize = 16.sp
                         )
-                        
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
                         LazyColumn {
                             items(guessedWords) { word ->
                                 Text(
                                     text = "• $word",
                                     color = IndigoDark,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(vertical = 4.dp)
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(vertical = 2.dp)
                                 )
                             }
                         }
                     }
                 }
-                
-                // Skipped words
+
                 Surface(
                     modifier = Modifier
                         .weight(1f)
@@ -140,31 +133,30 @@ fun ScoreScreen(
                     shape = RoundedCornerShape(16.dp),
                     color = Color.White.copy(alpha = 0.9f)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Column(modifier = Modifier.padding(8.dp)) {
                         Text(
                             text = "SKIPPED",
                             color = Color.Red,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontSize = 16.sp
                         )
-                        
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
                         LazyColumn {
                             items(skippedWords) { word ->
                                 Text(
                                     text = "• $word",
                                     color = IndigoDark,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.padding(vertical = 4.dp)
+                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(vertical = 2.dp)
                                 )
                             }
                         }
                     }
                 }
             }
-            
-            // Action buttons
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -199,7 +191,7 @@ fun ScoreScreen(
                         )
                     }
                 }
-                
+
                 Button(
                     onClick = onPlayAgain,
                     modifier = Modifier
@@ -244,6 +236,7 @@ fun ScoreStat(label: String, value: String, color: Color) {
             color = Color.White,
             fontSize = 14.sp
         )
+
         Text(
             text = value,
             color = color,

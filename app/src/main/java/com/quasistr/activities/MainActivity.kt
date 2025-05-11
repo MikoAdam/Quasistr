@@ -1,4 +1,4 @@
-package com.quasistr
+package com.quasistr.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.quasistr.screens.DeckSelectionScreen
 import com.quasistr.screens.GameModesScreen
 import com.quasistr.screens.MainMenuScreen
 import com.quasistr.ui.theme.QuasistrTheme
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuasistrTheme {
                 var currentScreen by remember { mutableStateOf("MainMenu") }
+                var gameMode by remember { mutableStateOf("Normal") }
 
                 when (currentScreen) {
                     "MainMenu" -> MainMenuScreen(
@@ -28,18 +30,21 @@ class MainActivity : ComponentActivity() {
                         onSettingsClick = { /* Future implementation */ }
                     )
                     "DeckSelection" -> DeckSelectionScreen(
+                        currentGameMode = gameMode,
                         onBackClick = { currentScreen = "MainMenu" },
                         onDeckSelect = { deck ->
-                            // Start GameActivity with the selected deck
                             val intent = Intent(this@MainActivity, GameActivity::class.java)
                             intent.putExtra("deck", deck)
+                            intent.putExtra("gameMode", gameMode)
                             startActivity(intent)
-                        }
+                        },
+                        onGameModeClick = { currentScreen = "GameModes" }
                     )
                     "GameModes" -> GameModesScreen(
+                        currentGameMode = gameMode,
                         onBackClick = { currentScreen = "MainMenu" },
-                        onModeSelect = {
-                            // For now, all modes just go to deck selection
+                        onModeSelect = { mode ->
+                            gameMode = mode
                             currentScreen = "DeckSelection"
                         }
                     )

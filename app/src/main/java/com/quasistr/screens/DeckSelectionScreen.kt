@@ -1,6 +1,7 @@
-package com.quasistr
+package com.quasistr.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,13 +24,17 @@ import com.quasistr.ui.theme.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeckSelectionScreen(
+    currentGameMode: String = "Normal",
     onBackClick: () -> Unit,
-    onDeckSelect: (String) -> Unit
+    onDeckSelect: (String) -> Unit,
+    onGameModeClick: () -> Unit = {}
 ) {
     var searchText by remember { mutableStateOf("") }
     var selectedDeck by remember { mutableStateOf<String?>(null) }
 
-    val allDecks = listOf("Movies", "Animals", "Famous People", "Geography", "Food & Drinks", "Sports")
+    val allDecks = listOf("Acting", "Countries", "Capitals", "Animals", "Movies", "Celebrities",
+        "Fruits", "Vegetables", "Professions", "Sports", "Colors", "Instruments",
+        "Vehicles", "Planets", "Famous Landmarks")
     val filteredDecks = if (searchText.isEmpty()) {
         allDecks
     } else {
@@ -42,7 +47,7 @@ fun DeckSelectionScreen(
                 title = {
                     Text(
                         text = "SELECT DECK",
-                        color = AmberPrimary,
+                        color = Color.White,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -97,13 +102,57 @@ fun DeckSelectionScreen(
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
             ) {
-                // Search Bar - Fix: remove the indicator color settings
+                // Game Mode Selector
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                        .clickable(onClick = onGameModeClick),
+                    colors = CardDefaults.cardColors(
+                        containerColor = IndigoSurface
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = when(currentGameMode) {
+                                    "Challenge" -> Icons.Default.Favorite
+                                    "Language Learning" -> Icons.Default.Info
+                                    "PVP Team" -> Icons.Default.Star
+                                    else -> Icons.Default.Lock
+                                },
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Mode: $currentGameMode",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Change Mode",
+                            tint = Color.White
+                        )
+                    }
+                }
+
+                // Search Bar
                 TextField(
                     value = searchText,
                     onValueChange = { searchText = it },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp),
+                        .padding(vertical = 8.dp),
                     placeholder = { Text("Search decks...") },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                     colors = TextFieldDefaults.colors(
@@ -111,9 +160,6 @@ fun DeckSelectionScreen(
                         unfocusedContainerColor = Color.White,
                         focusedTextColor = IndigoDark,
                         unfocusedTextColor = IndigoDark,
-                        // Remove these two lines to fix the underline issue
-                        // focusedIndicatorColor = IndigoLight,
-                        // unfocusedIndicatorColor = Color.White
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
@@ -177,7 +223,6 @@ fun DeckSelectionScreen(
 
                         Button(
                             onClick = {
-                                // Only start the game if a deck is selected
                                 selectedDeck?.let { deck ->
                                     onDeckSelect(deck)
                                 }

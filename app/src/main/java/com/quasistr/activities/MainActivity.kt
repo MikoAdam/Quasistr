@@ -1,54 +1,98 @@
 package com.quasistr.activities
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import com.quasistr.animations.getTransitionSpec
+import com.quasistr.components.AsymmetricBackground
 import com.quasistr.screens.DeckSelectionScreen
 import com.quasistr.screens.GameModesScreen
-import com.quasistr.screens.MainMenuScreen
+import com.quasistr.screens.SettingsScreen
 import com.quasistr.ui.theme.QuasistrTheme
 
 class MainActivity : ComponentActivity() {
+    private var backPressedTime = 0L
+    private val currentScreenState = mutableStateOf("DeckSelection")
+    private val gameModeState = mutableStateOf("Normal")
+
+    private var currentScreen: String
+        get() = currentScreenState.value
+        set(value) { currentScreenState.value = value }
+
+    private var gameMode: String
+        get() = gameModeState.value
+        set(value) { gameModeState.value = value }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        // Force portrait orientation for MainActivity
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         setContent {
             QuasistrTheme {
-                var currentScreen by remember { mutableStateOf("MainMenu") }
-                var gameMode by remember { mutableStateOf("Normal") }
+                val currentScreen by remember { currentScreenState }
+                val gameMode by remember { gameModeState }
 
-                when (currentScreen) {
-                    "MainMenu" -> MainMenuScreen(
-                        onPlayClick = { currentScreen = "DeckSelection" },
-                        onGameModesClick = { currentScreen = "GameModes" },
-                        onSettingsClick = { /* Future implementation */ }
-                    )
-                    "DeckSelection" -> DeckSelectionScreen(
-                        currentGameMode = gameMode,
-                        onBackClick = { currentScreen = "MainMenu" },
-                        onDeckSelect = { deck ->
-                            val intent = Intent(this@MainActivity, GameActivity::class.java)
-                            intent.putExtra("deck", deck)
-                            intent.putExtra("gameMode", gameMode)
-                            startActivity(intent)
-                        },
-                        onGameModeClick = { currentScreen = "GameModes" }
-                    )
-                    "GameModes" -> GameModesScreen(
-                        currentGameMode = gameMode,
-                        onBackClick = { currentScreen = "MainMenu" },
-                        onModeSelect = { mode ->
-                            gameMode = mode
-                            currentScreen = "DeckSelection"
+                AsymmetricBackground {
+                    AnimatedContent(
+                        targetState = currentScreen,
+                        transitionSpec = getTransitionSpec()
+                    ) { screen ->
+                        when (screen) {
+                            "DeckSelection" -> DeckSelectionScreen(
+                                currentGameMode = gameMode,
+                                onDeckSelect = { deck ->
+                                    val intent = Intent(this@MainActivity, GameActivity::class.java).apply {
+                                        putExtra("deck", deck)
+                                        putExtra("gameMode", gameMode)
+                                    }
+                                    startActivity(intent)
+                                },
+                                onGameModeClick = { this@MainActivity.currentScreen = "GameModes" },
+                                onSettingsClick = { this@MainActivity.currentScreen = "Settings" }
+                            )
+                            "GameModes" -> GameModesScreen(
+                                currentGameMode = gameMode,
+                                onBackClick = { this@MainActivity.currentScreen = "DeckSelection" },
+                                onModeSelect = { mode ->
+                                    this@MainActivity.gameMode = mode
+                                    this@MainActivity.currentScreen = "DeckSelection"
+                                }
+                            )
+                            "Settings" -> SettingsScreen(
+                                onBackClick = { this@MainActivity.currentScreen = "DeckSelection" }
+                            )
                         }
-                    )
+                    }
                 }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        when (currentScreen) {
+            "DeckSelection" -> {
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    super.onBackPressed()
+                } else {
+                    Toast.makeText(this, "Press back again to exit",
+                        Toast.LENGTH_SHORT).show()
+                }
+                backPressedTime = System.currentTimeMillis()
+            }
+            "GameModes", "Settings" -> {
+                currentScreen = "DeckSelection"
+            }
+            else -> {
+                super.onBackPressed()
             }
         }
     }

@@ -2,160 +2,143 @@ package com.quasistr.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.EaseOutBack
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.quasistr.ui.theme.AmberPrimary
-import com.quasistr.ui.theme.IndigoBackground
-import com.quasistr.ui.theme.IndigoLight
-import com.quasistr.ui.theme.IndigoSurface
+import com.quasistr.R
+import com.quasistr.components.AsymmetricBackground
 import com.quasistr.ui.theme.QuasistrTheme
 import kotlinx.coroutines.delay
 
-class SplashActivity : ComponentActivity() {
+class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             QuasistrTheme {
-                SplashScreen()
+                SplashScreen(
+                    onSplashComplete = {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    }
+                )
             }
         }
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }, 3000)
     }
 }
 
 @Composable
-fun SplashScreen() {
-    // Animation values
+fun SplashScreen(onSplashComplete: () -> Unit) {
+    var splashStage by remember { mutableStateOf(1) }
     val scale = remember { Animatable(0.8f) }
-    val rotate = remember { Animatable(-10f) }
+    val rotate = remember { Animatable(-5f) }
     val alpha = remember { Animatable(0f) }
 
-    // Animation loading dots
-    var dotIndex by remember { mutableStateOf(0) }
+    LaunchedEffect(splashStage) {
+        if (splashStage == 1) {
+            alpha.snapTo(0f)
+            scale.snapTo(0.8f)
+            rotate.snapTo(-5f)
 
-    // Run animations
-    LaunchedEffect(Unit) {
-        scale.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 700,
-                easing = EaseOutBack
-            )
-        )
+            alpha.animateTo(1f, tween(500))
+            scale.animateTo(1f, tween(700, easing = EaseOutBack))
+            rotate.animateTo(0f, tween(700, easing = EaseOutBack))
 
-        alpha.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 700,
-                easing = LinearEasing
-            )
-        )
+            delay(1500)
+            alpha.animateTo(0f, tween(500))
 
-        rotate.animateTo(
-            targetValue = 0f,
-            animationSpec = tween(
-                durationMillis = 700
-            )
-        )
-    }
+            delay(200)
+            splashStage = 2
+        } else if (splashStage == 2) {
+            alpha.snapTo(0f)
+            scale.snapTo(0.8f)
+            rotate.snapTo(-5f)
 
-    // Loading dots animation
-    LaunchedEffect(Unit) {
-        while(true) {
-            delay(350)
-            dotIndex = (dotIndex + 1) % 3
+            alpha.animateTo(1f, tween(500))
+            scale.animateTo(1f, tween(700, easing = EaseOutBack))
+            rotate.animateTo(0f, tween(700, easing = EaseOutBack))
+
+            delay(1500)
+            onSplashComplete()
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(IndigoBackground)
-    ) {
-        // Background circles
-        Box(
-            modifier = Modifier
-                .size(300.dp)
-                .align(Alignment.Center)
-                .clip(CircleShape)
-                .background(IndigoSurface.copy(alpha = 0.6f))
-        )
-
-        Box(
-            modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.Center)
-                .clip(CircleShape)
-                .background(IndigoLight.copy(alpha = 0.5f))
-        )
-
-        // Content
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .scale(scale.value)
-                .rotate(rotate.value)
-                .graphicsLayer(alpha = alpha.value),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            // Logo text - temporarily using text instead of image
-            Text(
-                text = "QuasistR",
-                color = AmberPrimary,
-                fontSize = 64.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-
-            Text(
-                text = "Tilt to Play • Party Game",
-                color = Color.White,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-
-            // Loading dots
-            Row(
-                modifier = Modifier.padding(top = 32.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+    AsymmetricBackground {
+        if (splashStage == 1) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .scale(scale.value)
+                    .rotate(rotate.value)
+                    .graphicsLayer(alpha = alpha.value),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                for (i in 0..2) {
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(CircleShape)
-                            .background(
-                                color = AmberPrimary.copy(
-                                    alpha = if (i == dotIndex) 1f else 0.3f
-                                )
-                            )
-                    )
-                }
+                Image(
+                    painter = painterResource(id = R.drawable.donkey_desk_logo),
+                    contentDescription = "Donkey Desk Studio",
+                    modifier = Modifier
+                        .width(220.dp)
+                        .padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = "A Donkey Desk Studio Game",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .scale(scale.value)
+                    .rotate(rotate.value)
+                    .graphicsLayer(alpha = alpha.value),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.quasistr_logo),
+                    contentDescription = "QuasistR Logo",
+                    modifier = Modifier
+                        .width(280.dp)
+                        .padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = "Tilt to Play • Party Game",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

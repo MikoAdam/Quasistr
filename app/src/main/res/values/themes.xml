@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base application theme -->
+    <style name="Theme.Quasistr" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
 
-    <style name="Theme.Quasistr" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Quasistr.Splash" parent="Theme.Quasistr">
+        <item name="android:windowBackground">@color/indigo_background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 </resources>

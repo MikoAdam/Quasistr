@@ -1,4 +1,3 @@
-// ui/theme/Theme.kt
 package com.quasistr.ui.theme
 
 import android.app.Activity
@@ -33,7 +32,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun QuasistrTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -49,8 +47,10 @@ fun QuasistrTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+
+            window.statusBarColor = IndigoBackground.toArgb()
+
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
         }
     }
 

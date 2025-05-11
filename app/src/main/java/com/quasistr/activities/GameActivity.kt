@@ -1,5 +1,7 @@
 package com.quasistr.activities
 
+import android.app.AlertDialog
+import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -11,41 +13,43 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.view.WindowManager
-import android.app.AlertDialog
-import android.content.pm.ActivityInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.quasistr.components.AsymmetricBackground
 import com.quasistr.data.Decks
 import com.quasistr.screens.CountdownScreen
 import com.quasistr.screens.GameScreen
 import com.quasistr.screens.ScoreScreen
 import com.quasistr.ui.theme.QuasistrTheme
-import com.quasistr.utils.SoundManager
 
 class GameActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var vibrator: Vibrator? = null
-    private lateinit var soundManager: SoundManager
 
     private var currentScreen by mutableStateOf("Countdown")
-    private var currentWordIndex by mutableStateOf(0)
+    private var currentWordIndex by mutableIntStateOf(0)
     private var words = listOf<String>()
     private var guessedWords = mutableListOf<String>()
     private var skippedWords = mutableListOf<String>()
-    private var guessedCount by mutableStateOf(0)
-    private var skippedCount by mutableStateOf(0)
+    private var guessedCount by mutableIntStateOf(0)
+    private var skippedCount by mutableIntStateOf(0)
     private var gameTimer: CountDownTimer? = null
     private var isVertical = true
     private var gameStarted = false
-    private var vibrationTriggered = false
-    private var remainingTime by mutableStateOf(60)
+    private var remainingTime by mutableIntStateOf(60)
 
     private var showCorrectAnimation by mutableStateOf(false)
     private var showSkipAnimation by mutableStateOf(false)
@@ -67,7 +71,7 @@ class GameActivity : ComponentActivity(), SensorEventListener {
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
-        val deckName = intent.getStringExtra("deck") ?: "Movies"
+        val deckName = intent.getStringExtra("deck") ?: Decks.getAllDeckNames().first()
         gameMode = intent.getStringExtra("gameMode") ?: "Normal"
 
         configureGameMode()
@@ -76,8 +80,6 @@ class GameActivity : ComponentActivity(), SensorEventListener {
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-
-        soundManager = SoundManager(this)
 
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -89,27 +91,37 @@ class GameActivity : ComponentActivity(), SensorEventListener {
 
         setContent {
             QuasistrTheme {
-                when (currentScreen) {
-                    "Countdown" -> CountdownScreen(
-                        onStartGame = { startGame() },
-                        onCancel = { finish() }
-                    )
-                    "Game" -> GameScreen(
-                        currentWord = if (currentWordIndex < words.size) words[currentWordIndex] else "",
-                        guessedCount = guessedCount,
-                        skippedCount = skippedCount,
-                        remainingTime = remainingTime,
-                        onEndGame = { showScoreScreen() }
-                    )
-                    "Score" -> ScoreScreen(
-                        guessedWords = guessedWords,
-                        skippedWords = skippedWords,
-                        onPlayAgain = {
-                            resetGame()
-                            setScreen("Countdown")
-                        },
-                        onBackToDecks = { finish() }
-                    )
+                AsymmetricBackground {
+                    AnimatedContent(
+                        targetState = currentScreen,
+                        transitionSpec = {
+                            fadeIn(animationSpec = tween(300)) togetherWith
+                                    fadeOut(animationSpec = tween(300))
+                        }
+                    ) { screen ->
+                        when (screen) {
+                            "Countdown" -> CountdownScreen(
+                                onStartGame = { startGame() },
+                                onCancel = { finish() }
+                            )
+                            "Game" -> GameScreen(
+                                currentWord = if (currentWordIndex < words.size) words[currentWordIndex] else "",
+                                guessedCount = guessedCount,
+                                skippedCount = skippedCount,
+                                remainingTime = remainingTime,
+                                onEndGame = { endGame() }
+                            )
+                            "Score" -> ScoreScreen(
+                                guessedWords = guessedWords,
+                                skippedWords = skippedWords,
+                                onPlayAgain = {
+                                    resetGame()
+                                    setScreen("Countdown")
+                                },
+                                onBackToDecks = { finish() }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -139,16 +151,6 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                 correctBonus = 10000L
                 skipPenalty = 5000L
             }
-            "Language Learning" -> {
-                initialTime = 60000L
-                correctBonus = 0L
-                skipPenalty = 0L
-            }
-            "PVP Team" -> {
-                initialTime = 60000L
-                correctBonus = 0L
-                skipPenalty = 0L
-            }
             else -> {
                 initialTime = 60000L
                 correctBonus = 0L
@@ -161,7 +163,6 @@ class GameActivity : ComponentActivity(), SensorEventListener {
         gameTimer?.cancel()
         gameStarted = true
         setScreen("Game")
-        soundManager.playCountdownSound()
         startTimer(initialTime)
     }
 
@@ -169,22 +170,11 @@ class GameActivity : ComponentActivity(), SensorEventListener {
         gameTimer = object : CountDownTimer(timeMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 remainingTime = (millisUntilFinished / 1000).toInt()
-
-                if (millisUntilFinished <= 10000 && millisUntilFinished > 9000) {
-                    soundManager.playTimeWarningSound()
-                }
-
-                if (millisUntilFinished <= 3000 && !vibrationTriggered) {
-                    vibrationTriggered = true
-                    vibrate(3000)
-                    soundManager.playTimeWarningSound()
-                }
             }
 
             override fun onFinish() {
-                soundManager.playGameOverSound()
-                showScoreScreen()
-                vibrationTriggered = false
+                vibrate(3000)
+                endGame()
             }
         }.start()
     }
@@ -200,9 +190,10 @@ class GameActivity : ComponentActivity(), SensorEventListener {
         words = words.shuffled()
     }
 
-    private fun showScoreScreen() {
+    private fun endGame() {
         gameStarted = false
         gameTimer?.cancel()
+        vibrate(3000)
         setScreen("Score")
     }
 
@@ -225,9 +216,8 @@ class GameActivity : ComponentActivity(), SensorEventListener {
         val z = event.values[2]
 
         if (isVertical && currentWordIndex < words.size) {
-            if (z > 7) {  // Tilted backwards (guessed)
+            if (z > 7) {
                 vibrate(200)
-                soundManager.playCorrectSound()
                 guessedWords.add(words[currentWordIndex])
                 guessedCount++
                 isVertical = false
@@ -239,9 +229,8 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                 }
 
                 moveToNextWord()
-            } else if (z < -7) {  // Tilted forward (skipped)
+            } else if (z < -7) {
                 vibrate(200)
-                soundManager.playSkipSound()
                 skippedWords.add(words[currentWordIndex])
                 skippedCount++
                 isVertical = false
@@ -256,7 +245,6 @@ class GameActivity : ComponentActivity(), SensorEventListener {
             }
         } else if (z in -3f..3f) {
             isVertical = true
-
             showCorrectAnimation = false
             showSkipAnimation = false
         }
@@ -285,35 +273,45 @@ class GameActivity : ComponentActivity(), SensorEventListener {
     private fun moveToNextWord() {
         currentWordIndex++
         if (currentWordIndex >= words.size) {
-            showScoreScreen()
+            endGame()
         }
     }
 
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         when (currentScreen) {
             "Countdown" -> {
                 finish()
             }
             "Game" -> {
-                AlertDialog.Builder(this)
+                // Create dialog and prevent immediate dismissal
+                val dialog = AlertDialog.Builder(this)
                     .setTitle("End Game?")
                     .setMessage("Are you sure you want to end the current game?")
-                    .setPositiveButton("Yes") { _, _ ->
-                        finish()
+                    .setPositiveButton("Yes") { dialogInterface, _ ->
+                        dialogInterface.dismiss() // Explicitly dismiss the dialog
+                        finish() // Then finish the activity
                     }
-                    .setNegativeButton("No", null)
-                    .show()
+                    .setNegativeButton("No") { dialogInterface, _ ->
+                        dialogInterface.dismiss() // Just dismiss the dialog
+                    }
+                    .setCancelable(false) // Prevent cancellation by tapping outside
+                    .create()
+
+                dialog.show()
+
+                // Don't call super.onBackPressed() here, as we're handling it ourselves
             }
             "Score" -> {
                 finish()
+            }
+            else -> {
+                super.onBackPressed()
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        soundManager.release()
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}

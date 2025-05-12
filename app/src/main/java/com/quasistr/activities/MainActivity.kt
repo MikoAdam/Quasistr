@@ -16,6 +16,7 @@ import com.quasistr.screens.DeckSelectionScreen
 import com.quasistr.screens.GameModesScreen
 import com.quasistr.screens.SettingsScreen
 import com.quasistr.ui.theme.QuasistrTheme
+import com.quasistr.utils.AnalyticsUtil
 
 class MainActivity : ComponentActivity() {
     private var backPressedTime = 0L
@@ -33,7 +34,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Force portrait orientation for MainActivity
+        AnalyticsUtil.logScreenView("Main", "MainActivity")
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
@@ -50,6 +52,9 @@ class MainActivity : ComponentActivity() {
                             "DeckSelection" -> DeckSelectionScreen(
                                 currentGameMode = gameMode,
                                 onDeckSelect = { deck ->
+                                    // Log deck selection event
+                                    AnalyticsUtil.logDeckSelected(deck)
+
                                     val intent = Intent(this@MainActivity, GameActivity::class.java).apply {
                                         putExtra("deck", deck)
                                         putExtra("gameMode", gameMode)
@@ -63,6 +68,9 @@ class MainActivity : ComponentActivity() {
                                 currentGameMode = gameMode,
                                 onBackClick = { this@MainActivity.currentScreen = "DeckSelection" },
                                 onModeSelect = { mode ->
+                                    // Log game mode selection
+                                    AnalyticsUtil.logGameModeSelected(mode)
+
                                     this@MainActivity.gameMode = mode
                                     this@MainActivity.currentScreen = "DeckSelection"
                                 }

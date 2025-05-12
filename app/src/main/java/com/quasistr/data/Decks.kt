@@ -5,6 +5,8 @@ import com.quasistr.data.models.Word
 
 object Decks {
     val gameDecks = mapOf(
+
+
         "Movies" to Deck(
             id = "movies", name = "Movies", category = "Entertainment",
             words = listOf(
@@ -336,6 +338,155 @@ object Decks {
                 Word("Space Shuttle",1), Word("Hubble Telescope",1), Word("Exoplanet",1),
                 Word("Light Year",1), Word("Eclipse",1), Word("Uranus",1), Word("Neutron Star",1),
                 Word("White Dwarf",1), Word("Red Giant",1), Word("Gravity",1), Word("Orbit",1)
+            )
+        ),
+        "Board Games" to Deck(
+            id = "board_games", name = "Board Games", category = "Entertainment",
+            words = listOf(
+                Word("Monopoly",1), Word("Chess",1), Word("Scrabble",1), Word("Clue",1),
+                Word("Risk",1), Word("Battleship",1), Word("Trivial Pursuit",1), Word("Candy Land",1),
+                Word("Connect Four",1), Word("Jenga",1), Word("Operation",1), Word("Sorry!",1),
+                Word("Uno",1), Word("Pictionary",1), Word("Scattergories",1), Word("Yahtzee",1),
+                Word("Guess Who?",1), Word("Chutes and Ladders",1), Word("Life",1), Word("Twister",1),
+                Word("Taboo",1), Word("Cranium",1), Word("Boggle",1), Word("Stratego",1),
+                Word("Checkers",1), Word("Catan",1), Word("Ticket to Ride",1), Word("Pandemic",1),
+                Word("Carcassonne",1), Word("Apples to Apples",1), Word("Backgammon",1), Word("Othello",1),
+                Word("Dominoes",1), Word("Mastermind",1), Word("Mouse Trap",1)
+            )
+        ),
+
+        "Dance Styles" to Deck(
+            id = "dance_styles", name = "Dance Styles", category = "Entertainment",
+            words = listOf(
+                Word("Ballet",1), Word("Salsa",1), Word("Hip Hop",1), Word("Tango",1),
+                Word("Waltz",1), Word("Breakdancing",1), Word("Contemporary",1), Word("Jazz",1),
+                Word("Tap Dance",1), Word("Flamenco",1), Word("Ballroom",1), Word("Swing",1),
+                Word("Belly Dance",1), Word("Rumba",1), Word("Cha-Cha",1), Word("Foxtrot",1),
+                Word("Samba",1), Word("Paso Doble",1), Word("Jive",1), Word("Mambo",1),
+                Word("Irish Step Dance",1), Word("Polka",1), Word("Square Dance",1), Word("Bollywood",1),
+                Word("Merengue",1), Word("Zumba",1), Word("Line Dancing",1), Word("Moonwalk",1),
+                Word("Hula",1), Word("Pole Dancing",1), Word("Vogue",1), Word("Popping",1),
+                Word("Krumping",1), Word("Ballet Folklorico",1), Word("Bhangra",1)
+            )
+        ),
+
+        "Inventions" to Deck(
+            id = "inventions", name = "Inventions", category = "Education",
+            words = listOf(
+                Word("Telephone",1), Word("Light Bulb",1), Word("Printing Press",1), Word("Wheel",1),
+                Word("Compass",1), Word("Television",1), Word("Airplane",1), Word("Computer",1),
+                Word("Refrigerator",1), Word("Camera",1), Word("Microwave",1), Word("Microscope",1),
+                Word("Telescope",1), Word("Automobile",1), Word("Steam Engine",1), Word("Antibiotics",1),
+                Word("X-ray",1), Word("Radio",1), Word("Scissors",1), Word("Clock",1),
+                Word("Washing Machine",1), Word("Vacuum Cleaner",1), Word("Thermometer",1), Word("Glasses",1),
+                Word("Elevator",1), Word("Battery",1), Word("Typewriter",1), Word("Sewing Machine",1),
+                Word("Calculator",1), Word("Parachute",1), Word("Microphone",1), Word("Paper",1),
+                Word("Gunpowder",1), Word("Bicycle",1), Word("Zipper",1)
+            )
+        ),
+
+        "Emotions & Feelings" to Deck(
+            id = "emotions", name = "Emotions & Feelings", category = "General",
+            words = listOf(
+                Word("Happiness",1), Word("Sadness",1), Word("Anger",1), Word("Fear",1),
+                Word("Disgust",1), Word("Surprise",1), Word("Love",1), Word("Jealousy",1),
+                Word("Embarrassment",1), Word("Pride",1), Word("Shame",1), Word("Guilt",1),
+                Word("Excitement",1), Word("Anxiety",1), Word("Boredom",1), Word("Confusion",1),
+                Word("Frustration",1), Word("Disappointment",1), Word("Hope",1), Word("Gratitude",1),
+                Word("Envy",1), Word("Nostalgia",1), Word("Relief",1), Word("Loneliness",1),
+                Word("Contentment",1), Word("Awe",1), Word("Curiosity",1), Word("Empathy",1),
+                Word("Sympathy",1), Word("Regret",1), Word("Euphoria",1), Word("Serenity",1),
+                Word("Melancholy",1), Word("Optimism",1), Word("Pessimism",1)
+            )
+        ),
+
+        "Hobbies" to Deck(
+            id = "hobbies", name = "Hobbies", category = "Lifestyle",
+            words = listOf(
+                Word("Photography",1), Word("Gardening",1), Word("Baking",1), Word("Hiking",1),
+                Word("Painting",1), Word("Model Building",1), Word("Bird Watching",1), Word("Knitting",1),
+                Word("Coin Collecting",1), Word("Stamp Collecting",1), Word("Camping",1), Word("Fishing",1),
+                Word("Pottery",1), Word("Woodworking",1), Word("Scrapbooking",1), Word("Blogging",1),
+                Word("Video Gaming",1), Word("Geocaching",1), Word("Rock Climbing",1), Word("Archery",1),
+                Word("Calligraphy",1), Word("Candle Making",1), Word("Origami",1), Word("Karaoke",1),
+                Word("Brewing Beer",1), Word("Wine Tasting",1), Word("Yoga",1), Word("Meditation",1),
+                Word("Quilting",1), Word("Jewelry Making",1), Word("Chess",1), Word("Card Games",1),
+                Word("Sudoku",1), Word("Crossword Puzzles",1), Word("Stargazing",1)
+            )
+        ),
+
+        "Mythical Creatures" to Deck(
+            id = "mythical_creatures", name = "Mythical Creatures", category = "Fantasy",
+            words = listOf(
+                Word("Dragon",1), Word("Unicorn",1), Word("Mermaid",1), Word("Griffin",1),
+                Word("Phoenix",1), Word("Centaur",1), Word("Minotaur",1), Word("Werewolf",1),
+                Word("Vampire",1), Word("Zombie",1), Word("Pegasus",1), Word("Sphinx",1),
+                Word("Cyclops",1), Word("Kraken",1), Word("Yeti",1), Word("Bigfoot",1),
+                Word("Goblin",1), Word("Troll",1), Word("Fairy",1), Word("Leprechaun",1),
+                Word("Ogre",1), Word("Chimera",1), Word("Hydra",1), Word("Gorgon",1),
+                Word("Banshee",1), Word("Cerberus",1), Word("Harpy",1), Word("Satyr",1),
+                Word("Siren",1), Word("Basilisk",1), Word("Golem",1), Word("Kitsune",1),
+                Word("Djinn",1), Word("Nessie",1), Word("Chupacabra",1)
+            )
+        ),
+
+        "Phobias" to Deck(
+            id = "phobias", name = "Phobias", category = "Psychology",
+            words = listOf(
+                Word("Arachnophobia",1), Word("Acrophobia",1), Word("Claustrophobia",1), Word("Agoraphobia",1),
+                Word("Ophidiophobia",1), Word("Aerophobia",1), Word("Trypophobia",1), Word("Aquaphobia",1),
+                Word("Nyctophobia",1), Word("Hemophobia",1), Word("Trypanophobia",1), Word("Cynophobia",1),
+                Word("Astraphobia",1), Word("Mysophobia",1), Word("Glossophobia",1), Word("Necrophobia",1),
+                Word("Coulrophobia",1), Word("Entomophobia",1), Word("Thanatophobia",1), Word("Pyrophobia",1),
+                Word("Ailurophobia",1), Word("Ornithophobia",1), Word("Thalassophobia",1), Word("Dentophobia",1),
+                Word("Zoophobia",1), Word("Tokophobia",1), Word("Nomophobia",1), Word("Emetophobia",1),
+                Word("Scopophobia",1), Word("Monophobia",1), Word("Xenophobia",1), Word("Chronophobia",1),
+                Word("Gephyrophobia",1), Word("Athazagoraphobia",1), Word("Automatonophobia",1)
+            )
+        ),
+
+        "Weather Phenomena" to Deck(
+            id = "weather", name = "Weather Phenomena", category = "Nature",
+            words = listOf(
+                Word("Rainbow",1), Word("Thunderstorm",1), Word("Tornado",1), Word("Hurricane",1),
+                Word("Blizzard",1), Word("Fog",1), Word("Lightning",1), Word("Hail",1),
+                Word("Tsunami",1), Word("Avalanche",1), Word("Drought",1), Word("Flood",1),
+                Word("Earthquake",1), Word("Volcano",1), Word("Aurora Borealis",1), Word("Monsoon",1),
+                Word("Wildfire",1), Word("Cyclone",1), Word("Dust Storm",1), Word("Heat Wave",1),
+                Word("Frost",1), Word("Dew",1), Word("Black Ice",1), Word("Sleet",1),
+                Word("Whirlpool",1), Word("Waterspout",1), Word("Sandstorm",1), Word("Typhoon",1),
+                Word("Acid Rain",1), Word("Landslide",1), Word("Mudslide",1), Word("Haze",1),
+                Word("Microburst",1), Word("Chinook",1), Word("Derecho",1)
+            )
+        ),
+
+        "Idioms & Expressions" to Deck(
+            id = "idioms", name = "Idioms & Expressions", category = "Language",
+            words = listOf(
+                Word("Break a leg",1), Word("Cat got your tongue",1), Word("Piece of cake",1), Word("Raining cats and dogs",1),
+                Word("Cost an arm and a leg",1), Word("Hit the nail on the head",1), Word("Spill the beans",1), Word("Under the weather",1),
+                Word("Bite the bullet",1), Word("Kill two birds with one stone",1), Word("Jump on the bandwagon",1), Word("Let the cat out of the bag",1),
+                Word("Barking up the wrong tree",1), Word("Beat around the bush",1), Word("Cut corners",1), Word("Speak of the devil",1),
+                Word("Add fuel to the fire",1), Word("Back to square one",1), Word("Blessing in disguise",1), Word("Call it a day",1),
+                Word("Elephant in the room",1), Word("Hit the road",1), Word("Once in a blue moon",1), Word("Steal someone's thunder",1),
+                Word("Break the ice",1), Word("The ball is in your court",1), Word("When pigs fly",1), Word("Pull someone's leg",1),
+                Word("On cloud nine",1), Word("Between a rock and a hard place",1), Word("Down to earth",1), Word("Give someone the cold shoulder",1),
+                Word("Cry over spilt milk",1), Word("Don't judge a book by its cover",1), Word("Cross that bridge when you come to it",1)
+            )
+        ),
+
+        "Fashion & Clothing" to Deck(
+            id = "fashion", name = "Fashion & Clothing", category = "Lifestyle",
+            words = listOf(
+                Word("High Heels",1), Word("Skinny Jeans",1), Word("Little Black Dress",1), Word("Tuxedo",1),
+                Word("Bow Tie",1), Word("Leather Jacket",1), Word("Hoodie",1), Word("Sundress",1),
+                Word("Ballet Flats",1), Word("Combat Boots",1), Word("Fedora",1), Word("Baseball Cap",1),
+                Word("Trench Coat",1), Word("Cardigan",1), Word("Bikini",1), Word("Turtleneck",1),
+                Word("Prom Dress",1), Word("Wedding Gown",1), Word("Crop Top",1), Word("Cargo Pants",1),
+                Word("Mini Skirt",1), Word("Vintage T-shirt",1), Word("Designer Handbag",1), Word("Stiletto Nails",1),
+                Word("Scarf",1), Word("Blazer",1), Word("Cocktail Dress",1), Word("Jumpsuit",1),
+                Word("Flannel Shirt",1), Word("Biker Shorts",1), Word("Romper",1), Word("Palazzo Pants",1),
+                Word("Fishnet Stockings",1), Word("Aviator Sunglasses",1), Word("Sequin Dress",1)
             )
         )
     )

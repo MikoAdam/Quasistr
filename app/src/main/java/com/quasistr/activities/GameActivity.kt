@@ -33,6 +33,7 @@ import com.quasistr.screens.CountdownScreen
 import com.quasistr.screens.GameScreen
 import com.quasistr.screens.ScoreScreen
 import com.quasistr.ui.theme.QuasistrTheme
+import com.quasistr.utils.AnalyticsUtil
 
 class GameActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -58,6 +59,7 @@ class GameActivity : ComponentActivity(), SensorEventListener {
     private var initialTime = 60000L
     private var correctBonus = 0L
     private var skipPenalty = 0L
+    private var deckName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +73,11 @@ class GameActivity : ComponentActivity(), SensorEventListener {
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
-        val deckName = intent.getStringExtra("deck") ?: Decks.getAllDeckNames().first()
+        deckName = intent.getStringExtra("deck") ?: Decks.getAllDeckNames().first()
         gameMode = intent.getStringExtra("gameMode") ?: "Normal"
+
+        // Log game start for analytics
+        AnalyticsUtil.logGameStart(deckName, gameMode)
 
         configureGameMode()
 
@@ -194,6 +199,17 @@ class GameActivity : ComponentActivity(), SensorEventListener {
         gameStarted = false
         gameTimer?.cancel()
         vibrate(3000)
+
+        // Log game end with statistics for analytics
+        val timePlayed = (initialTime/1000 - remainingTime).toInt()
+        AnalyticsUtil.logGameEnd(
+            deck = deckName,
+            gameMode = gameMode,
+            guessedCount = guessedCount,
+            skippedCount = skippedCount,
+            timePlayedSeconds = timePlayed
+        )
+
         setScreen("Score")
     }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "968418524861",
+    "project_id": "quasistr-6c8f8",
+    "storage_bucket": "quasistr-6c8f8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968418524861:android:899db8e9e9da0b404681d4",
+        "android_client_info": {
+          "package_name": "com.quasistr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiioD_8vsKm5uNmHeDyFcp0FtdHGXnNQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.quasistr" />
+                  <option name="mobileSdkAppId" value="1:968418524861:android:899db8e9e9da0b404681d4" />
+                  <option name="projectId" value="quasistr-6c8f8" />
+                  <option name="projectNumber" value="968418524861" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

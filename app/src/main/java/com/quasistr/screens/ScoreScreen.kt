@@ -48,10 +48,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.quasistr.R
 import com.quasistr.ui.theme.AmberPrimary
 import com.quasistr.ui.theme.IndigoBackground
 import com.quasistr.ui.theme.IndigoDark
@@ -65,6 +68,7 @@ fun ScoreScreen(
     onPlayAgain: () -> Unit,
     onBackToDecks: () -> Unit
 ) {
+    val context = LocalContext.current
     val totalWords = guessedWords.size + skippedWords.size
     val allWordsGuessed = guessedWords.size == totalWords && totalWords > 0
 
@@ -173,7 +177,7 @@ fun ScoreScreen(
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
-                                    text = "PERFECT SCORE!",
+                                    text = stringResource(R.string.perfect_score),
                                     color = IndigoDark,
                                     fontSize = 28.sp,
                                     fontWeight = FontWeight.ExtraBold,
@@ -197,7 +201,7 @@ fun ScoreScreen(
                     enter = fadeIn() + expandVertically()
                 ) {
                     Text(
-                        text = "You guessed all ${totalWords} words correctly!",
+                        text = stringResource(R.string.perfect_score_message, totalWords),
                         color = Color.White,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
@@ -206,7 +210,7 @@ fun ScoreScreen(
                 }
             } else {
                 Text(
-                    text = "GAME RESULTS",
+                    text = stringResource(R.string.game_results),
                     color = AmberPrimary,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
@@ -231,21 +235,21 @@ fun ScoreScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     ScoreStat(
-                        label = "GUESSED",
+                        label = stringResource(R.string.guessed),
                         value = "${guessedWords.size}",
                         ratio = if (totalWords > 0) guessedWords.size.toFloat() / totalWords else 0f,
                         color = Color(0xFF4CAF50) // Green
                     )
 
                     ScoreStat(
-                        label = "SKIPPED",
+                        label = stringResource(R.string.skipped),
                         value = "${skippedWords.size}",
                         ratio = if (totalWords > 0) skippedWords.size.toFloat() / totalWords else 0f,
                         color = Color(0xFFF44336) // Red
                     )
 
                     ScoreStat(
-                        label = "ACCURACY",
+                        label = stringResource(R.string.accuracy),
                         value = if (totalWords > 0) "${(guessedWords.size * 100 / totalWords)}%" else "0%",
                         ratio = if (totalWords > 0) guessedWords.size.toFloat() / totalWords else 0f,
                         color = AmberPrimary
@@ -282,7 +286,7 @@ fun ScoreScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "GUESSED WORDS",
+                                text = stringResource(R.string.guessed_words),
                                 color = Color(0xFF4CAF50),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp
@@ -300,7 +304,7 @@ fun ScoreScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "No words guessed",
+                                    text = stringResource(R.string.no_words_guessed),
                                     color = Color.Gray,
                                     fontSize = 14.sp,
                                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -348,7 +352,7 @@ fun ScoreScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "SKIPPED WORDS",
+                                text = stringResource(R.string.skipped_words),
                                 color = Color(0xFFF44336),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp
@@ -366,7 +370,7 @@ fun ScoreScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "No words skipped",
+                                    text = stringResource(R.string.no_words_skipped),
                                     color = Color.Gray,
                                     fontSize = 14.sp,
                                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -425,7 +429,7 @@ fun ScoreScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "MENU",
+                            text = stringResource(R.string.menu),
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
@@ -458,7 +462,7 @@ fun ScoreScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "PLAY AGAIN",
+                            text = stringResource(R.string.play_again),
                             color = IndigoDark,
                             fontWeight = FontWeight.Bold
                         )

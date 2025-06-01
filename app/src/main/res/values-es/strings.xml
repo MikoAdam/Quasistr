@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuasistR</string>
+    <string name="game_mode">Modo de Juego</string>
+    <string name="select_deck">Seleccionar Mazo</string>
+    <string name="play_game">JUGAR</string>
+    <string name="settings">Configuración e Info</string>
+    <string name="language">Idioma</string>
+    <string name="normal_mode">Normal</string>
+    <string name="challenge_mode">Desafío</string>
+    <string name="language_learning_mode">Aprendizaje de Idiomas</string>
+    <string name="guessed_words">PALABRAS ADIVINADAS</string>
+    <string name="skipped_words">PALABRAS OMITIDAS</string>
+    <string name="perfect_score">¡PUNTUACIÓN PERFECTA!</string>
+    <string name="game_results">RESULTADOS DEL JUEGO</string>
+    <string name="play_again">JUGAR DE NUEVO</string>
+    <string name="menu">MENÚ</string>
+    <string name="tilt_up_correct">Inclina HACIA ARRIBA cuando adivines correctamente</string>
+    <string name="tilt_down_skip">Inclina HACIA ABAJO para omitir</string>
+    <string name="words">palabras</string>
+    <string name="credits">Créditos</string>
+    <string name="about_quasistr">Acerca de QuasistR</string>
+    <string name="terms_of_service">Términos de Servicio</string>
+    <string name="follow_on_instagram">Seguir en Instagram</string>
+    <string name="contact_support">Contactar Soporte</string>
+    <string name="rate_quasistr">Calificar QuasistR</string>
+    <string name="close">Cerrar</string>
+    <string name="coming_soon">Próximamente</string>
+    <string name="sound_effects">Efectos de Sonido</string>
+    <string name="vibration">Vibración</string>
+    <string name="selected">seleccionado</string>
+    <string name="ui_language">Idioma del Menú</string>
+    <string name="deck_language">Idioma del Contenido</string>
+    <string name="select_language">Seleccionar Idioma</string>
+    <string name="game_settings">CONFIGURACIÓN DE JUEGO</string>
+    <string name="language_settings">CONFIGURACIÓN DE IDIOMA</string>
+    <string name="about">ACERCA DE</string>
+    <string name="legal">LEGAL</string>
+    <string name="connect">CONECTAR</string>
+    <string name="end_game_title">¿Terminar Juego?</string>
+    <string name="end_game_message">¿Estás seguro de que quieres terminar el juego actual?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="get_ready">¡Prepárate!</string>
+    <string name="starting_in">Comenzando en...</string>
+    <string name="cancel">Cancelar</string>
+    <string name="normal_mode_description">60 segundos para adivinar tantas palabras como sea posible</string>
+    <string name="challenge_mode_description">+10 segundos por respuestas correctas, -5 segundos por omitidas</string>
+    <string name="language_learning_description">Aprende vocabulario en alemán, inglés o húngaro</string>
+    <string name="pvp_team_mode">Equipo PVP</string>
+    <string name="pvp_team_description">Modo competición equipo contra equipo</string>
+    <string name="press_back_again_to_exit">Presiona atrás nuevamente para salir</string>
+    <string name="guessed">ADIVINADAS</string>
+    <string name="skipped">OMITIDAS</string>
+    <string name="accuracy">PRECISIÓN</string>
+    <string name="no_words_guessed">No hay palabras adivinadas</string>
+    <string name="no_words_skipped">No hay palabras omitidas</string>
+    <string name="perfect_score_message">¡Adivinaste correctamente todas las %1$d palabras!</string>
+    <string name="about_description">Conoce el juego</string>
+    <string name="credits_description">Equipo de desarrollo</string>
+    <string name="terms_description">Política de privacidad y términos</string>
+    <string name="rate_description">Califícanos en Google Play</string>
+    <string name="developer_credit">Desarrollado por Adam Miko</string>
+    <string name="designer_credit">Diseño gráfico por Gia Phan</string>
+
+    <string name="about_content">QuasistR es el juego de charadas definitivo para tu teléfono. Sostén tu dispositivo frente a tu frente y deja que otros representen la palabra en pantalla.\n\n• Inclina hacia arriba cuando adivines correctamente\n• Inclina hacia abajo para pasar la palabra\n• Elige entre varios mazos temáticos\n• Perfecto para fiestas y reuniones\n\n¡Diviértete y disfruta del juego!</string>
+
+    <string name="terms_content">TÉRMINOS DE SERVICIO Y POLÍTICA DE PRIVACIDAD\n\n1. ACEPTACIÓN DE LOS TÉRMINOS\nAl usar QuasistR, aceptas estos términos.\n\n2. PRIVACIDAD Y RECOLECCIÓN DE DATOS\nRecopilamos solo analíticas de uso anónimas para mejorar el juego. No se recopila ni comparte información personal con terceros.\n\n3. CONTENIDO DE TERCEROS\nEsta aplicación contiene referencias a películas, celebridades y otro contenido con derechos de autor para fines de entretenimiento bajo las disposiciones de uso justo.\n\n4. RESPONSABILIDAD\nLa aplicación se proporciona \"tal cual\" sin garantías. No somos responsables de ningún daño derivado del uso de la aplicación.\n\n5. CAMBIOS\nPodemos actualizar estos términos en cualquier momento. El uso continuado constituye la aceptación de los cambios.\n\n6. CONTACTO\n¿Preguntas? Contáctanos en quasistr@gmail.com\n\nÚltima actualización: junio de 2025</string>
+    <!-- Add these new strings -->
+    <string name="select_target_language">Seleccionar idioma objetivo</string>
+    <string name="change_language">Cambiar idioma</string>
+    <string name="word_count">%1$d palabras</string>
+    <!-- Add these short strings -->
+    <string name="correct">Correcto</string>
+    <string name="skip">Omitir</string>
+</resources>

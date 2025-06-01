@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuasistR</string>
+    <string name="game_mode">Spielmodus</string>
+    <string name="select_deck">Deck auswählen</string>
+    <string name="play_game">SPIEL STARTEN</string>
+    <string name="settings">Einstellungen &amp; Info</string>
+    <string name="language">Sprache</string>
+    <string name="normal_mode">Normal</string>
+    <string name="challenge_mode">Herausforderung</string>
+    <string name="language_learning_mode">Sprachenlernen</string>
+    <string name="guessed_words">ERRATENE WÖRTER</string>
+    <string name="skipped_words">ÜBERSPRUNGENE WÖRTER</string>
+    <string name="perfect_score">PERFEKTE PUNKTZAHL!</string>
+    <string name="game_results">SPIELERGEBNISSE</string>
+    <string name="play_again">NOCHMAL SPIELEN</string>
+    <string name="menu">MENÜ</string>
+    <string name="tilt_up_correct">Nach oben neigen wenn richtig erraten</string>
+    <string name="tilt_down_skip">Nach unten neigen zum überspringen</string>
+    <string name="words">Wörter</string>
+    <string name="credits">Impressum</string>
+    <string name="about_quasistr">Über QuasistR</string>
+    <string name="terms_of_service">Nutzungsbedingungen</string>
+    <string name="follow_on_instagram">Folge uns auf Instagram</string>
+    <string name="contact_support">Support kontaktieren</string>
+    <string name="rate_quasistr">QuasistR bewerten</string>
+    <string name="close">Schließen</string>
+    <string name="coming_soon">Demnächst verfügbar</string>
+    <string name="sound_effects">Soundeffekte</string>
+    <string name="vibration">Vibration</string>
+    <string name="selected">ausgewählt</string>
+    <string name="ui_language">Menü-Sprache</string>
+    <string name="deck_language">Spielinhalt-Sprache</string>
+    <string name="select_language">Sprache auswählen</string>
+    <string name="game_settings">SPIEL-EINSTELLUNGEN</string>
+    <string name="language_settings">SPRACH-EINSTELLUNGEN</string>
+    <string name="about">ÜBER</string>
+    <string name="legal">RECHTLICHES</string>
+    <string name="connect">VERBINDEN</string>
+    <string name="end_game_title">Spiel beenden?</string>
+    <string name="end_game_message">Bist du sicher, dass du das aktuelle Spiel beenden möchtest?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="get_ready">Mach dich bereit!</string>
+    <string name="starting_in">Start in...</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="normal_mode_description">60 Sekunden, um so viele Wörter wie möglich zu erraten</string>
+    <string name="challenge_mode_description">+10 Sekunden für richtige Antworten, -5 Sekunden für Übersprungene</string>
+    <string name="language_learning_description">Lerne Vokabeln auf Deutsch, Englisch oder Ungarisch</string>
+    <string name="pvp_team_mode">PVP Team</string>
+    <string name="pvp_team_description">Team gegen Team Wettkampfmodus</string>
+    <string name="press_back_again_to_exit">Nochmals zurück drücken zum Beenden</string>
+    <string name="guessed">ERRATEN</string>
+    <string name="skipped">ÜBERSPRUNGEN</string>
+    <string name="accuracy">GENAUIGKEIT</string>
+    <string name="no_words_guessed">Keine Wörter erraten</string>
+    <string name="no_words_skipped">Keine Wörter übersprungen</string>
+    <string name="perfect_score_message">Du hast alle %1$d Wörter richtig erraten!</string>
+    <string name="about_description">Über das Spiel erfahren</string>
+    <string name="credits_description">Entwicklungsteam</string>
+    <string name="terms_description">Datenschutz &amp; Nutzungsbedingungen</string>
+    <string name="rate_description">Bewerte uns im Google Play Store</string>
+    <string name="developer_credit">Entwickelt von Adam Miko</string>
+    <string name="designer_credit">Grafikdesign von Gia Phan</string>
+
+    <string name="about_content">QuasistR ist das ultimative Scharade-Spiel für dein Handy! Halte dein Gerät an deine Stirn und lass andere das Wort auf dem Bildschirm darstellen.\n\n• Neige NACH OBEN wenn du richtig rätst\n• Neige NACH UNTEN zum Überspringen\n• Wähle aus verschiedenen Themen-Decks\n• Perfekt für Partys und Zusammenkünfte\n\nViel Spaß beim Spielen!</string>
+
+    <string name="terms_content">NUTZUNGSBEDINGUNGEN &amp; DATENSCHUTZ\n\n1. ANNAHME DER BEDINGUNGEN\nDurch die Nutzung von QuasistR stimmst du diesen Bedingungen zu.\n\n2. DATENSCHUTZ &amp; DATENSAMMLUNG\nWir sammeln nur anonyme Nutzungsanalysen zur Verbesserung des Spiels. Keine persönlichen Informationen werden gesammelt oder mit Dritten geteilt.\n\n3. INHALTE DRITTER\nDiese App enthält Verweise auf Filme, Prominente und andere urheberrechtlich geschützte Inhalte zu Unterhaltungszwecken unter Fair-Use-Bestimmungen.\n\n4. HAFTUNG\nDie App wird "wie sie ist" ohne Gewährleistungen bereitgestellt. Wir haften nicht für Schäden aus der App-Nutzung.\n\n5. ÄNDERUNGEN\nWir können diese Bedingungen jederzeit aktualisieren. Die weitere Nutzung gilt als Zustimmung zu Änderungen.\n\n6. KONTAKT\nFragen? Kontaktiere uns unter quasistr@gmail.com\n\nZuletzt aktualisiert: Juni 2025</string>
+    <!-- Add these new strings -->
+    <string name="select_target_language">Zielsprache auswählen</string>
+    <string name="change_language">Sprache ändern</string>
+    <string name="word_count">%1$d Wörter</string>
+    <!-- Add these short strings -->
+    <string name="correct">Richtig</string>
+    <string name="skip">Überspringen</string>
+</resources>

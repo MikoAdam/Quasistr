@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QuasistR</string>
+    <string name="game_mode">Játékmód</string>
+    <string name="select_deck">Pakli kiválasztása</string>
+    <string name="play_game">JÁTÉK INDÍTÁSA</string>
+    <string name="settings">Beállítások &amp; Info</string>
+    <string name="language">Nyelv</string>
+    <string name="normal_mode">Normál</string>
+    <string name="challenge_mode">Kihívás</string>
+    <string name="language_learning_mode">Nyelvtanulás</string>
+    <string name="guessed_words">KITALÁLT SZAVAK</string>
+    <string name="skipped_words">ÁTUGROTT SZAVAK</string>
+    <string name="perfect_score">TÖKÉLETES EREDMÉNY!</string>
+    <string name="game_results">JÁTÉK EREDMÉNYEI</string>
+    <string name="play_again">ÚJRA JÁTÉK</string>
+    <string name="menu">MENÜ</string>
+    <string name="tilt_up_correct">Billentsd fel ha kitaláltad</string>
+    <string name="tilt_down_skip">Billentsd le az átugráshoz</string>
+    <string name="words">szó</string>
+    <string name="credits">Készítők</string>
+    <string name="about_quasistr">QuasistR névjegy</string>
+    <string name="terms_of_service">Felhasználási feltételek</string>
+    <string name="follow_on_instagram">Kövess Instagramon</string>
+    <string name="contact_support">Ügyfélszolgálat</string>
+    <string name="rate_quasistr">QuasistR értékelése</string>
+    <string name="close">Bezárás</string>
+    <string name="coming_soon">Hamarosan</string>
+    <string name="sound_effects">Hangeffektek</string>
+    <string name="vibration">Rezgés</string>
+    <string name="selected">kiválasztva</string>
+    <string name="ui_language">Menü nyelve</string>
+    <string name="deck_language">Játék tartalom nyelve</string>
+    <string name="select_language">Nyelv kiválasztása</string>
+    <string name="game_settings">JÁTÉK BEÁLLÍTÁSOK</string>
+    <string name="language_settings">NYELVI BEÁLLÍTÁSOK</string>
+    <string name="about">NÉVJEGY</string>
+    <string name="legal">JOGI</string>
+    <string name="connect">KAPCSOLAT</string>
+    <string name="end_game_title">Játék befejezése?</string>
+    <string name="end_game_message">Biztosan be akarod fejezni a jelenlegi játékot?</string>
+    <string name="yes">Igen</string>
+    <string name="no">Nem</string>
+    <string name="get_ready">Készülj fel!</string>
+    <string name="starting_in">Indítás...</string>
+    <string name="cancel">Mégse</string>
+    <string name="normal_mode_description">60 másodperc, hogy minél több szót kitalálj</string>
+    <string name="challenge_mode_description">+10 másodperc helyes válaszért, -5 másodperc átugrásért</string>
+    <string name="language_learning_description">Tanulj szókincs német, angol vagy magyar nyelven</string>
+    <string name="pvp_team_mode">PVP Csapat</string>
+    <string name="pvp_team_description">Csapat vs Csapat verseny mód</string>
+    <string name="press_back_again_to_exit">Nyomja meg újra a vissza gombot a kilépéshez</string>
+    <string name="guessed">KITALÁLT</string>
+    <string name="skipped">ÁTUGROTT</string>
+    <string name="accuracy">PONTOSSÁG</string>
+    <string name="no_words_guessed">Nincs kitalált szó</string>
+    <string name="no_words_skipped">Nincs átugrott szó</string>
+    <string name="perfect_score_message">Mind a %1$d szót helyesen kitaláltad!</string>
+    <string name="about_description">Tudj meg többet a játékról</string>
+    <string name="credits_description">Fejlesztőcsapat</string>
+    <string name="terms_description">Adatvédelem &amp; felhasználási feltételek</string>
+    <string name="rate_description">Értékelj minket a Google Play-ben</string>
+    <string name="developer_credit">Fejlesztette: Adam Miko</string>
+    <string name="designer_credit">Grafikai tervezés: Gia Phan</string>
+
+    <string name="about_content">A QuasistR a tökéletes társasjáték a telefonodra! Tartsd a készüléked a homlokodon és hagyd, hogy mások eljátsszák a képernyőn látható szót.\n\n• Billentsd FEL ha kitaláltad\n• Billentsd LE az átugráshoz\n• Válassz különböző témájú paklikból\n• Tökéletes bulikhoz és összejövetelekhez\n\nJó szórakozást!</string>
+
+    <string name="terms_content">FELHASZNÁLÁSI FELTÉTELEK &amp; ADATVÉDELEM\n\n1. FELTÉTELEK ELFOGADÁSA\nA QuasistR használatával elfogadod ezeket a feltételeket.\n\n2. ADATVÉDELEM &amp; ADATGYŰJTÉS\nCsak névtelen használati elemzéseket gyűjtünk a játék fejlesztéséhez. Személyes adatokat nem gyűjtünk vagy osztunk meg harmadik felekkel.\n\n3. HARMADIK FELES TARTALOM\nEz az alkalmazás filmekre, hírességekre és egyéb szerzői joggal védett tartalmakra hivatkozik szórakoztatási célból, a fair use rendelkezések alatt.\n\n4. FELELŐSSÉG\nAz alkalmazás "ahogy van" alapon kerül biztosításra, garancia nélkül. Nem vállalunk felelősséget az alkalmazás használatából eredő károkért.\n\n5. VÁLTOZÁSOK\nEzeket a feltételeket bármikor frissíthetjük. A további használat a változások elfogadását jelenti.\n\n6. KAPCSOLAT\nKérdések? Írj nekünk: quasistr@gmail.com\n\nUtoljára frissítve: 2025 június</string>
+    <!-- Add these new strings -->
+    <string name="select_target_language">Célnyelv kiválasztása</string>
+    <string name="change_language">Nyelv változtatása</string>
+    <string name="word_count">%1$d szó</string>
+    <!-- Add these short strings -->
+    <string name="correct">Helyes</string>
+    <string name="skip">Átugrás</string>
+</resources>

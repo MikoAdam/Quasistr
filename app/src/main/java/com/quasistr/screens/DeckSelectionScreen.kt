@@ -50,11 +50,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.quasistr.data.Decks
+import com.quasistr.R
+import com.quasistr.data.DeckManager
 import com.quasistr.ui.theme.AmberPrimary
 import com.quasistr.ui.theme.IndigoBackground
 import com.quasistr.ui.theme.IndigoDark
@@ -68,11 +71,12 @@ fun DeckSelectionScreen(
     onGameModeClick: () -> Unit = {},
     onSettingsClick: () -> Unit
 ) {
+    val context = LocalContext.current  // Add this line to get context
     var searchText by remember { mutableStateOf("") }
     var selectedDeck by remember { mutableStateOf<String?>(null) }
 
-    val allDecks = Decks.getAllDeckNames().map { deckName ->
-        deckName to Decks.getDeckWordCount(deckName)
+    val allDecks = DeckManager.getDecksForCurrentLanguage(context).map { (deckId, deck) ->
+        deck.name to deck.words.size
     }
 
     val filteredDecks = if (searchText.isEmpty()) {
@@ -121,7 +125,7 @@ fun DeckSelectionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "QuasistR",
+                    text = stringResource(R.string.app_name),
                     color = Color.White,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
@@ -135,7 +139,7 @@ fun DeckSelectionScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Settings",
+                        contentDescription = stringResource(R.string.settings),
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
@@ -174,7 +178,7 @@ fun DeckSelectionScreen(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = "Game Mode: $currentGameMode",
+                            text = "${stringResource(R.string.game_mode)}: $currentGameMode",
                             color = Color.White,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp
@@ -217,7 +221,7 @@ fun DeckSelectionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Select a Deck",
+                    text = stringResource(R.string.select_deck),
                     color = Color.White,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -225,7 +229,7 @@ fun DeckSelectionScreen(
 
                 if (selectedDeck != null) {
                     Text(
-                        text = "$selectedDeck selected",
+                        text = "$selectedDeck ${stringResource(R.string.selected)}",
                         color = AmberPrimary,
                         fontSize = 14.sp,
                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -254,7 +258,7 @@ fun DeckSelectionScreen(
 
                 item {
                     DeckItem(
-                        name = "COMING SOON",
+                        name = stringResource(R.string.coming_soon).uppercase(),
                         wordCount = 0,
                         isSelected = false,
                         isDisabled = true,
@@ -266,8 +270,11 @@ fun DeckSelectionScreen(
             // Play Button
             Button(
                 onClick = {
-                    selectedDeck?.let { deck ->
-                        onDeckSelect(deck)
+                    selectedDeck?.let { deckName ->
+                        // Find the deck ID by name
+                        val deckId = DeckManager.getDecksForCurrentLanguage(context)
+                            .entries.find { it.value.name == deckName }?.key
+                        deckId?.let { onDeckSelect(it) }
                     }
                 },
                 enabled = selectedDeck != null,
@@ -294,7 +301,7 @@ fun DeckSelectionScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "PLAY GAME",
+                        text = stringResource(R.string.play_game),
                         color = IndigoDark,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
@@ -354,7 +361,7 @@ fun DeckItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "$wordCount words",
+                    text = "$wordCount ${stringResource(R.string.words)}",
                     color = if (isSelected) IndigoDark.copy(alpha = 0.7f) else Color.White.copy(alpha = 0.7f),
                     fontSize = 13.sp
                 )

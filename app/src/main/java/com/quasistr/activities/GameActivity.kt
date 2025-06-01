@@ -1,6 +1,7 @@
 package com.quasistr.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -27,13 +28,15 @@ import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.quasistr.R
 import com.quasistr.components.AsymmetricBackground
-import com.quasistr.data.Decks
+import com.quasistr.data.DeckManager
 import com.quasistr.screens.CountdownScreen
 import com.quasistr.screens.GameScreen
 import com.quasistr.screens.ScoreScreen
 import com.quasistr.ui.theme.QuasistrTheme
 import com.quasistr.utils.AnalyticsUtil
+import com.quasistr.utils.PreferenceManager
 
 class GameActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -60,9 +63,19 @@ class GameActivity : ComponentActivity(), SensorEventListener {
     private var correctBonus = 0L
     private var skipPenalty = 0L
     private var deckName = ""
+    private var isLanguageLearning = false
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase?.let { PreferenceManager.wrapContext(it) })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Ensure locale is always set correctly
+        val languageCode = PreferenceManager.getUILanguage(this)
+        PreferenceManager.updateLocale(this, languageCode)
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         updateOrientation()
@@ -73,15 +86,14 @@ class GameActivity : ComponentActivity(), SensorEventListener {
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
 
-        deckName = intent.getStringExtra("deck") ?: Decks.getAllDeckNames().first()
+        deckName = intent.getStringExtra("deck") ?: ""
         gameMode = intent.getStringExtra("gameMode") ?: "Normal"
+        isLanguageLearning = intent.getBooleanExtra("isLanguageLearning", false)
 
-        // Log game start for analytics
         AnalyticsUtil.logGameStart(deckName, gameMode)
 
         configureGameMode()
-
-        words = Decks.getWordsByDeckName(deckName).shuffled()
+        loadWords()
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -106,6 +118,9 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                     ) { screen ->
                         when (screen) {
                             "Countdown" -> CountdownScreen(
+                                deckName = deckName,
+                                gameMode = gameMode,
+                                isLanguageLearning = isLanguageLearning,
                                 onStartGame = { startGame() },
                                 onCancel = { finish() }
                             )
@@ -128,6 +143,26 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun loadWords() {
+        words = if (isLanguageLearning) {
+            val allLanguageLearningDecks = mutableMapOf<String, com.quasistr.data.models.LanguageLearningDeck>()
+            allLanguageLearningDecks.putAll(DeckManager.getLanguageLearningDecks("de"))
+            allLanguageLearningDecks.putAll(DeckManager.getLanguageLearningDecks("en"))
+            allLanguageLearningDecks.putAll(DeckManager.getLanguageLearningDecks("hu"))
+
+            val deck = allLanguageLearningDecks[deckName]
+            deck?.words?.shuffled() ?: emptyList()
+        } else {
+            if (deckName.isNotEmpty()) {
+                DeckManager.getWordsByDeckName(deckName, this).shuffled()
+            } else {
+                DeckManager.getAllDeckNames(this).firstOrNull()?.let { firstDeck ->
+                    DeckManager.getWordsByDeckName(firstDeck, this).shuffled()
+                } ?: emptyList()
             }
         }
     }
@@ -155,6 +190,11 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                 initialTime = 60000L
                 correctBonus = 10000L
                 skipPenalty = 5000L
+            }
+            "Language Learning" -> {
+                initialTime = 90000L
+                correctBonus = 0L
+                skipPenalty = 0L
             }
             else -> {
                 initialTime = 60000L
@@ -185,14 +225,25 @@ class GameActivity : ComponentActivity(), SensorEventListener {
     }
 
     private fun resetGame() {
+        // Stop any running timer first
+        gameTimer?.cancel()
+        gameStarted = false
+
+        // Reset all game state completely
         currentWordIndex = 0
         guessedWords.clear()
         skippedWords.clear()
         guessedCount = 0
         skippedCount = 0
-        remainingTime = 60
-        gameStarted = false
-        words = words.shuffled()
+        remainingTime = if (gameMode == "Language Learning") 90 else 60
+
+        // Reset animations and sensor state
+        showCorrectAnimation = false
+        showSkipAnimation = false
+        isVertical = true
+
+        // Reload words from the same deck
+        loadWords()
     }
 
     private fun endGame() {
@@ -220,6 +271,11 @@ class GameActivity : ComponentActivity(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
+
+        // Force locale update every time activity resumes
+        val languageCode = PreferenceManager.getUILanguage(this)
+        PreferenceManager.updateLocale(this, languageCode)
+
         accelerometer?.also { sensor ->
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
@@ -304,23 +360,20 @@ class GameActivity : ComponentActivity(), SensorEventListener {
                 finish()
             }
             "Game" -> {
-                // Create dialog and prevent immediate dismissal
                 val dialog = AlertDialog.Builder(this)
-                    .setTitle("End Game?")
-                    .setMessage("Are you sure you want to end the current game?")
-                    .setPositiveButton("Yes") { dialogInterface, _ ->
-                        dialogInterface.dismiss() // Explicitly dismiss the dialog
-                        finish() // Then finish the activity
+                    .setTitle(getString(R.string.end_game_title))
+                    .setMessage(getString(R.string.end_game_message))
+                    .setPositiveButton(getString(R.string.yes)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                        finish()
                     }
-                    .setNegativeButton("No") { dialogInterface, _ ->
-                        dialogInterface.dismiss() // Just dismiss the dialog
+                    .setNegativeButton(getString(R.string.no)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
                     }
-                    .setCancelable(false) // Prevent cancellation by tapping outside
+                    .setCancelable(false)
                     .create()
 
                 dialog.show()
-
-                // Don't call super.onBackPressed() here, as we're handling it ourselves
             }
             "Score" -> {
                 finish()
@@ -333,6 +386,7 @@ class GameActivity : ComponentActivity(), SensorEventListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        gameTimer?.cancel()
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}

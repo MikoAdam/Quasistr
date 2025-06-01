@@ -4,6 +4,6 @@ data class Deck(
     val id: String,
     val name: String,
     val category: String,
-    val words: List<Word>,
-    val language: String = "en"
+    val instruction: String? = null,
+    val words: List<String>
 )

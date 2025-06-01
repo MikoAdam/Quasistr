@@ -1,3 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Quasistr</string>
+    <string name="app_name" translatable="false">QuasistR</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="select_deck">Select a Deck</string>
+    <string name="play_game">PLAY GAME</string>
+    <string name="settings">Settings &amp; Info</string>
+    <string name="language">Language</string>
+    <string name="normal_mode">Normal</string>
+    <string name="challenge_mode">Challenge</string>
+    <string name="language_learning_mode">Language Learning</string>
+    <string name="guessed_words">GUESSED WORDS</string>
+    <string name="skipped_words">SKIPPED WORDS</string>
+    <string name="perfect_score">PERFECT SCORE!</string>
+    <string name="game_results">GAME RESULTS</string>
+    <string name="play_again">PLAY AGAIN</string>
+    <string name="menu">MENU</string>
+    <string name="tilt_up_correct">Tilt UP when you guess correctly</string>
+    <string name="tilt_down_skip">Tilt DOWN to skip</string>
+    <string name="words">words</string>
+    <string name="credits">Credits</string>
+    <string name="about_quasistr">About QuasistR</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="follow_on_instagram">Follow on Instagram</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="rate_quasistr">Rate QuasistR</string>
+    <string name="close">Close</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="sound_effects">Sound Effects</string>
+    <string name="vibration">Vibration</string>
+    <string name="selected">selected</string>
+    <string name="ui_language">Menu Language</string>
+    <string name="deck_language">Game Content Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="game_settings">GAME SETTINGS</string>
+    <string name="language_settings">LANGUAGE SETTINGS</string>
+    <string name="about">ABOUT</string>
+    <string name="legal">LEGAL</string>
+    <string name="connect">CONNECT</string>
+    <string name="end_game_title">End Game?</string>
+    <string name="end_game_message">Are you sure you want to end the current game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="get_ready">Get Ready!</string>
+    <string name="starting_in">Starting in...</string>
+    <string name="cancel">Cancel</string>
+    <string name="normal_mode_description">60 seconds to guess as many words as possible</string>
+    <string name="challenge_mode_description">Get +10 seconds for each correct guess, -5 seconds for each skip</string>
+    <string name="language_learning_description">Learn vocabulary in German, English, or Hungarian</string>
+    <string name="pvp_team_mode">PVP Team</string>
+    <string name="pvp_team_description">Team vs Team competition mode</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="guessed">GUESSED</string>
+    <string name="skipped">SKIPPED</string>
+    <string name="accuracy">ACCURACY</string>
+    <string name="no_words_guessed">No words guessed</string>
+    <string name="no_words_skipped">No words skipped</string>
+    <string name="perfect_score_message">You guessed all %1$d words correctly!</string>
+    <string name="about_description">Learn about the game</string>
+    <string name="credits_description">Development team</string>
+    <string name="terms_description">Privacy policy &amp; terms</string>
+    <string name="rate_description">Rate us on Google Play</string>
+    <string name="developer_credit">Developed by Adam Miko</string>
+    <string name="designer_credit">Graphic design by Gia Phan</string>
+
+    <string name="about_content">QuasistR is the ultimate charades game for your phone! Hold your device to your forehead and let others act out the word on screen.\n\n• Tilt UP when you guess correctly\n• Tilt DOWN to skip the word\n• Choose from various themed decks\n• Perfect for parties and gatherings\n\nHave fun and enjoy the game!</string>
+
+    <string name="terms_content">TERMS OF SERVICE &amp; PRIVACY POLICY\n\n1. ACCEPTANCE OF TERMS\nBy using QuasistR, you agree to these terms.\n\n2. PRIVACY &amp; DATA COLLECTION\nWe collect only anonymous usage analytics to improve the game. No personal information is collected or shared with third parties.\n\n3. THIRD-PARTY CONTENT\nThis app contains references to movies, celebrities, and other copyrighted content for entertainment purposes under fair use provisions.\n\n4. LIABILITY\nThe app is provided "as is" without warranties. We are not liable for any damages arising from app usage.\n\n5. CHANGES\nWe may update these terms at any time. Continued use constitutes acceptance of changes.\n\n6. CONTACT\nQuestions? Contact us at quasistr@gmail.com\n\nLast updated: June 2025</string>
+
+    <string name="select_target_language">Select Target Language</string>
+    <string name="change_language">Change Language</string>
+    <string name="word_count">%1$d words</string>
+    <!-- Add these short strings -->
+    <string name="correct">Correct</string>
+    <string name="skip">Skip</string>
 </resources>

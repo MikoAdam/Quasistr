@@ -307,12 +307,16 @@ fun ScoreScreen(
                                 )
                             }
                         } else {
-                            LazyColumn {
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(4.dp),
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            ) {
                                 items(guessedWords) { word ->
                                     Text(
                                         text = "• $word",
                                         color = IndigoDark,
                                         fontSize = 14.sp,
+                                        lineHeight = 18.sp,
                                         modifier = Modifier.padding(vertical = 2.dp)
                                     )
                                 }
@@ -369,12 +373,16 @@ fun ScoreScreen(
                                 )
                             }
                         } else {
-                            LazyColumn {
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(4.dp),
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            ) {
                                 items(skippedWords) { word ->
                                     Text(
                                         text = "• $word",
                                         color = IndigoDark,
                                         fontSize = 14.sp,
+                                        lineHeight = 18.sp,
                                         modifier = Modifier.padding(vertical = 2.dp)
                                     )
                                 }

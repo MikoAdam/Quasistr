@@ -198,9 +198,14 @@ class GameActivity : ComponentActivity(), SensorEventListener {
     private fun endGame() {
         gameStarted = false
         gameTimer?.cancel()
+
+        if (currentWordIndex < words.size && !skippedWords.contains(words[currentWordIndex]) && !guessedWords.contains(words[currentWordIndex])) {
+            skippedWords.add(words[currentWordIndex])
+            skippedCount++
+        }
+
         vibrate(3000)
 
-        // Log game end with statistics for analytics
         val timePlayed = (initialTime/1000 - remainingTime).toInt()
         AnalyticsUtil.logGameEnd(
             deck = deckName,

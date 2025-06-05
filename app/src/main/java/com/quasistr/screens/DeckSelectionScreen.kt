@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TimerOff
 import androidx.compose.material3.Button
@@ -71,11 +72,12 @@ fun DeckSelectionScreen(
     onGameModeClick: () -> Unit = {},
     onSettingsClick: () -> Unit
 ) {
-    val context = LocalContext.current  // Add this line to get context
+    val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
     var selectedDeck by remember { mutableStateOf<String?>(null) }
+    var randomDeckSelected by remember { mutableStateOf(false) }
 
-    val allDecks = DeckManager.getDecksForCurrentLanguage(context).map { (deckId, deck) ->
+    val allDecks = DeckManager.getDecksForCurrentLanguage(context).map { (_, deck) ->
         deck.name to deck.words.size
     }
 
@@ -85,7 +87,15 @@ fun DeckSelectionScreen(
         allDecks.filter { it.first.contains(searchText, ignoreCase = true) }
     }
 
-    // No Scaffold - just a basic Box with background
+    // Function to pick random deck
+    fun selectRandomDeck() {
+        if (allDecks.isNotEmpty()) {
+            val randomDeck = allDecks.random()
+            selectedDeck = randomDeck.first
+            randomDeckSelected = true
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -195,11 +205,17 @@ fun DeckSelectionScreen(
             // Search Bar
             TextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    searchText = it
+                    // Reset random selection when searching
+                    if (it.isNotEmpty()) {
+                        randomDeckSelected = false
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 12.dp),
-                placeholder = { Text("Search decks...") },
+                placeholder = { Text(stringResource(R.string.search_decks)) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
@@ -229,7 +245,11 @@ fun DeckSelectionScreen(
 
                 if (selectedDeck != null) {
                     Text(
-                        text = "$selectedDeck ${stringResource(R.string.selected)}",
+                        text = if (randomDeckSelected) {
+                            "${stringResource(R.string.random_deck)}: $selectedDeck"
+                        } else {
+                            "$selectedDeck ${stringResource(R.string.selected)}"
+                        },
                         color = AmberPrimary,
                         fontSize = 14.sp,
                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -245,17 +265,30 @@ fun DeckSelectionScreen(
                 contentPadding = PaddingValues(vertical = 8.dp),
                 modifier = Modifier.weight(1f)
             ) {
-                items(filteredDecks) { (deckName, wordCount) ->
-                    DeckItem(
-                        name = deckName,
-                        wordCount = wordCount,
-                        isSelected = selectedDeck == deckName,
+                // Random deck button - ALWAYS FIRST
+                item {
+                    RandomDeckItem(
+                        isSelected = randomDeckSelected,
                         onClick = {
-                            selectedDeck = deckName
+                            selectRandomDeck()
                         }
                     )
                 }
 
+                // Regular decks
+                items(filteredDecks) { (deckName, wordCount) ->
+                    DeckItem(
+                        name = deckName,
+                        wordCount = wordCount,
+                        isSelected = selectedDeck == deckName && !randomDeckSelected,
+                        onClick = {
+                            selectedDeck = deckName
+                            randomDeckSelected = false
+                        }
+                    )
+                }
+
+                // Coming soon deck
                 item {
                     DeckItem(
                         name = stringResource(R.string.coming_soon).uppercase(),
@@ -308,6 +341,53 @@ fun DeckSelectionScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RandomDeckItem(
+    isSelected: Boolean = false,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(110.dp),
+        color = if (isSelected) AmberPrimary else Color(0xFF9C27B0), // Purple color for random
+        shape = RoundedCornerShape(16.dp),
+        shadowElevation = if (isSelected) 8.dp else 4.dp
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Shuffle,
+                contentDescription = null,
+                tint = if (isSelected) IndigoDark else Color.White,
+                modifier = Modifier.size(32.dp)
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = stringResource(R.string.random_deck),
+                color = if (isSelected) IndigoDark else Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = stringResource(R.string.surprise_me),
+                color = if (isSelected) IndigoDark.copy(alpha = 0.7f) else Color.White.copy(alpha = 0.7f),
+                fontSize = 11.sp,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.quasistr"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.quasistr"
         minSdk = 27
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 4
         versionName = "1.0.7"
 
@@ -39,15 +39,8 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
-    }
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs += listOf(
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.9.22"
-        )
     }
     packaging {
         resources {

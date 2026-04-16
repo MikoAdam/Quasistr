@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.compose.compiler)
@@ -8,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.quasistr"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.quasistr"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 4
         versionName = "1.0.7"
 
@@ -39,13 +38,17 @@ android {
     buildFeatures {
         compose = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    compileSdkMinor = 0
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
     }
 }
 
@@ -61,8 +64,8 @@ dependencies {
 
     // Firebase dependencies
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-crashlytics")
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

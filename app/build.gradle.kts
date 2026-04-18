@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.quasistr"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.quasistr"
         minSdk = 27
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 4
-        versionName = "1.0.7"
+        versionName = "1.0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
